@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10121b">
+  <meta name="description" content="A premium vanilla JavaScript Kanban workspace for organizing tasks.">
+  <title>TaskFlow — Workspace Overview</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#" aria-label="TaskFlow home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 9.2 17 19 7"/></svg></span>
+        <span>task<span class="brand-accent">flow</span></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <div class="workspace-switcher">
+        <span class="workspace-icon">W</span>
+        <span class="workspace-copy"><strong>Web Studio</strong><small>Free workspace</small></span>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="nav-label">MENU</div>
+      <nav class="nav-list">
+        <button class="nav-item" data-view="overview"><span class="nav-icon">◫</span> Overview</button>
+        <button class="nav-item" data-view="all"><span class="nav-icon">▤</span> My Tasks <span class="nav-count" id="nav-total">0</span></button>
+        <button class="nav-item active" data-view="board"><span class="nav-icon">▥</span> Kanban Board</button>
+        <button class="nav-item" data-view="completed"><span class="nav-icon">✓</span> Completed</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="upgrade-card">
+          <div class="upgrade-spark">✦</div>
+          <strong>Make space for great work</strong>
+          <p>Keep your projects clear and your momentum going.</p>
+          <span class="upgrade-link">Your workspace, your pace ↗</span>
+        </div>
+        <div class="profile">
+          <div class="avatar">IK</div>
+          <div class="profile-copy"><strong>Ismail Khan</strong><small>Workspace member</small></div>
+          <button class="icon-button profile-menu" aria-label="Profile options" title="Profile options">···</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu icon-button" id="mobile-menu" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong id="breadcrumb-title">Overview</strong></div>
+        <div class="topbar-actions">
+          <span class="date-pill"><span class="date-dot"></span><span id="current-date">Today</span></span>
+          <button class="icon-button help-button" id="help-button" aria-label="Project help" title="Project help">?</button>
+          <div class="avatar avatar-small">IK</div>
+        </div>
+      </header>
+
+      <section class="page-content">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL WORKSPACE</div>
+            <h1 id="page-title">Workspace <span>Overview</span></h1>
+            <p id="page-subtitle">Manage your tasks and turn plans into progress.</p>
+          </div>
+          <button class="button button-primary" id="add-task-top"><span class="plus">+</span> Add new task</button>
+        </div>
+
+        <section class="stats-grid" aria-label="Task statistics">
+          <article class="stat-card stat-total">
+            <div class="stat-top"><span class="stat-label">Total tasks</span><span class="stat-icon icon-blue">▤</span></div>
+            <div class="stat-number" id="stat-total">0</div>
+            <div class="stat-foot"><span class="stat-dot blue"></span><span>Across your workspace</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Pending</span><span class="stat-icon icon-amber">◷</span></div>
+            <div class="stat-number" id="stat-pending">0</div>
+            <div class="stat-foot"><span class="stat-dot amber"></span><span>Ready to get started</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">In progress</span><span class="stat-icon icon-violet">↗</span></div>
+            <div class="stat-number" id="stat-progress">0</div>
+            <div class="stat-foot"><span class="stat-dot violet"></span><span>Currently underway</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Completed</span><span class="stat-icon icon-green">✓</span></div>
+            <div class="stat-number" id="stat-completed">0</div>
+            <div class="stat-foot"><span class="stat-dot green"></span><span>Progress you have made</span></div>
+          </article>
+        </section>
+
+        <section class="board-section" id="board-section">
+          <div class="board-toolbar">
+            <div class="board-title-wrap">
+              <div class="board-title-line"><h2 id="board-title">Kanban board</h2><span class="live-indicator"><span></span> Live workspace</span></div>
+              <p>Move each task forward, one step at a time.</p>
+            </div>
+            <div class="board-tools">
+              <label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks..." aria-label="Search tasks"></label>
+              <button class="button button-secondary filter-toggle" id="filter-toggle" aria-expanded="false"><span>☷</span> Filters</button>
+              <button class="button button-secondary clear-completed" id="clear-completed">Clear completed</button>
+            </div>
+          </div>
+
+          <div class="filters-panel" id="filters-panel" hidden>
+            <label>Priority
+              <select id="priority-filter">
+                <option value="all">All priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option>
+              </select>
+            </label>
+            <label>Status
+              <select id="status-filter">
+                <option value="all">All statuses</option><option value="pending">Pending</option><option value="progress">In Progress</option><option value="completed">Completed</option>
+              </select>
+            </label>
+            <label>Sort by
+              <select id="sort-filter">
+                <option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="due">Due date</option>
+              </select>
+            </label>
+            <button class="text-button" id="reset-filters">Reset filters</button>
+          </div>
+
+          <div class="kanban-board" id="kanban-board">
+            <section class="kanban-column" data-status="pending" aria-labelledby="pending-heading">
+              <div class="column-heading">
+                <div class="column-heading-left"><span class="status-marker marker-pending"></span><h3 id="pending-heading">Pending</h3><span class="column-count" id="count-pending">0</span></div>
+                <button class="column-add" data-add-status="pending" aria-label="Add pending task" title="Add task">+</button>
+              </div>
+              <div class="task-list" id="list-pending" data-list-status="pending"></div>
+              <div class="column-empty" id="empty-pending"><span class="empty-icon">✧</span><strong>Nothing here yet</strong><small>Add a task to get things moving.</small></div>
+              <button class="add-inline" data-add-status="pending"><span>+</span> Add a task</button>
+            </section>
+            <section class="kanban-column" data-status="progress" aria-labelledby="progress-heading">
+              <div class="column-heading">
+                <div class="column-heading-left"><span class="status-marker marker-progress"></span><h3 id="progress-heading">In progress</h3><span class="column-count" id="count-progress">0</span></div>
+                <button class="column-add" data-add-status="progress" aria-label="Add task" title="Add task">+</button>
+              </div>
+              <div class="task-list" id="list-progress" data-list-status="progress"></div>
+              <div class="column-empty" id="empty-progress"><span class="empty-icon">◌</span><strong>Ready when you are</strong><small>Tasks you start will appear here.</small></div>
+              <button class="add-inline" data-add-status="progress"><span>+</span> Add a task</button>
+            </section>
+            <section class="kanban-column" data-status="completed" aria-labelledby="completed-heading">
+              <div class="column-heading">
+                <div class="column-heading-left"><span class="status-marker marker-completed"></span><h3 id="completed-heading">Completed</h3><span class="column-count" id="count-completed">0</span></div>
+                <button class="column-add" data-add-status="completed" aria-label="Add completed task" title="Add task">+</button>
+              </div>
+              <div class="task-list" id="list-completed" data-list-status="completed"></div>
+              <div class="column-empty" id="empty-completed"><span class="empty-icon">✓</span><strong>Wins go here</strong><small>Finish a task to see it here.</small></div>
+              <button class="add-inline" data-add-status="completed"><span>+</span> Add a task</button>
+            </section>
+          </div>
+          <footer class="board-footer"><span><span class="footer-live"></span> Changes save automatically on this device.</span><span id="footer-task-count">0 tasks in workspace</span></footer>
+        </section>
+        <footer class="page-footer"><span>Made for focused work.</span><span>TaskFlow <span class="footer-separator">•</span> Vanilla JavaScript workspace</span></footer>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="task-modal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
+      <div class="modal-header">
+        <div><div class="modal-eyebrow">TASK DETAILS</div><h2 id="modal-title">Create a new task</h2><p id="modal-description">A small step is still a step forward.</p></div>
+        <button class="icon-button modal-close" id="modal-close" aria-label="Close dialog">×</button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="editing-task-id">
+        <div class="form-field">
+          <label for="task-title">Task title <span class="required">*</span></label>
+          <input id="task-title" name="title" type="text" maxlength="100" placeholder="e.g. Design the landing page" required>
+          <small class="field-error" id="title-error" aria-live="polite"></small>
+        </div>
+        <div class="form-field">
+          <label for="task-description">Description <span class="optional">Optional</span></label>
+          <textarea id="task-description" name="description" rows="3" maxlength="500" placeholder="Add a few details about this task..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="task-priority">Priority</label>
+            <select id="task-priority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select>
+          </div>
+          <div class="form-field">
+            <label for="task-category">Category <span class="optional">Optional</span></label>
+            <input id="task-category" name="category" type="text" maxlength="40" placeholder="e.g. Design">
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="task-due-date">Due date <span class="optional">Optional</span></label>
+          <input id="task-due-date" name="dueDate" type="date">
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-secondary" id="modal-cancel">Cancel</button><button type="submit" class="button button-primary" id="save-task-button"><span class="plus">+</span> Create task</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
+  <div class="help-popover" id="help-popover" hidden>
+    <strong>Quick guide</strong>
+    <p>Create tasks, then use the arrow on a card to move it through your workflow. Edit or delete any task from its menu.</p>
+    <p>Your tasks are saved locally in this browser.</p>
+    <button class="text-button" id="close-help">Got it</button>
+  </div>
+</body>
+</html>
